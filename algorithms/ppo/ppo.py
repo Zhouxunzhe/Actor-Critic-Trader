@@ -60,6 +60,7 @@ class PPO:
             validation_wealth = self.validate(verbose)
             print(f"PPO validating - Iteration: {iteration},\tCumulative Return: {int(validation_wealth) - 1000000}")
             validation_history.append(validation_wealth - 1000000)
+            # save the best model
             if validation_wealth > max_wealth:
                 self.agent.save_models(self.checkpoint_dir)
             max_wealth = max(max_wealth, validation_wealth)
@@ -116,7 +117,7 @@ class PPO:
             observation = observation_
             if verbose:
                 print(f"PPO testing - Date: {info.date()},\tBalance: {int(self.env.get_balance())},\t"
-                    f"Cumulative Return: {int(wealth) - 1000000},\tShares: {self.env.get_shares()}")
+                      f"Cumulative Return: {int(wealth) - 1000000},\tShares: {self.env.get_shares()}")
             return_history.append(wealth - 1000000)
             wealth_history.append(wealth)
         self.agent.memory.clear_memory()

@@ -1,11 +1,10 @@
 #%%
 import warnings
-warnings.filterwarnings('ignore')
-
 from env.environment import PortfolioEnv
 import numpy as np
 import pandas as pd
 from pyfolio import timeseries
+warnings.filterwarnings('ignore')
 
 env = PortfolioEnv(state_type='indicators')
 action_shape = env.action_shape()

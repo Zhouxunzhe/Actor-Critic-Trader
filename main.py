@@ -1,12 +1,11 @@
 import warnings
-warnings.filterwarnings('ignore')
-
 from algorithms.ddpg.ddpg import DDPG
 from algorithms.a2c.a2c import A2C
 from algorithms.ppo.ppo import PPO
 import plot
 import torch.multiprocessing as mp
 import os
+warnings.filterwarnings('ignore')
 
 
 def main():

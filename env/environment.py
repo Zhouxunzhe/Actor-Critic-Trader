@@ -71,10 +71,10 @@ class PortfolioEnv:
             for stock in self.historical_data:
                 state.extend(stock[['Adj Close', 'MA20', 'MA50', 'MA200', 'ATR', 'Volume']].iloc[self.current_row])
             return np.array(state)
-        
+
         if self.action_interpret == 'transactions' and self.state_type == 'only prices':
             return [self.balance] + self.prices.tolist() + self.shares.tolist()
-        
+
         if self.action_interpret == 'transactions' and self.state_type == 'indicators':
             state = [self.balance] + self.shares.tolist()
             for stock in self.historical_data:
@@ -89,10 +89,10 @@ class PortfolioEnv:
 
     def get_wealth(self):
         return self.prices.dot(self.shares) + self.balance
-    
+
     def get_balance(self):
         return self.balance
-    
+
     def get_shares(self):
         return self.shares
 
@@ -105,10 +105,10 @@ class PortfolioEnv:
             end_row = self.historical_data[0].index.size - 1
         else:
             end_row = self.historical_data[0].index.get_loc(end_date)
-        
+
         values = [sum([stock['Adj Close'][row] for stock in self.historical_data])
                   for row in range(start_row, end_row + 1)]
-        dates = self.historical_data[0].index[start_row:end_row+1]
+        dates = self.historical_data[0].index[start_row:end_row + 1]
 
         return pd.Series(values, index=dates)
 
@@ -123,7 +123,7 @@ class PortfolioEnv:
             valid_end = valid_begin + int(np.round(valid_ratio * size - 1))
             test_begin = valid_end + 1
             test_end = -1
-        
+
         if self.state_type == 'indicators':
             size = len(index) - 199
             train_begin = 199
@@ -132,15 +132,15 @@ class PortfolioEnv:
             valid_end = valid_begin + int(np.round(valid_ratio * size - 1))
             test_begin = valid_end + 1
             test_end = -1
-        
+
         intervals = {'training': (index[train_begin], index[train_end]),
-             'validation': (index[valid_begin], index[valid_end]),
-             'testing': (index[test_begin], index[test_end])}
+                     'validation': (index[valid_begin], index[valid_end]),
+                     'testing': (index[test_begin], index[test_end])}
 
         return intervals
 
     def step(self, action, softmax=True):
-        
+
         if self.action_interpret == 'portfolio':
             current_wealth = self.get_wealth()
             if softmax:
@@ -156,7 +156,7 @@ class PortfolioEnv:
             new_prices = self.get_prices()
             reward = (new_prices - self.prices).dot(self.shares)
             self.prices = new_prices
-        
+
         if self.action_interpret == 'transactions':
             actions = np.maximum(np.round(np.array(action) * self.action_scale), -self.shares)
             cost = self.prices.dot(actions)

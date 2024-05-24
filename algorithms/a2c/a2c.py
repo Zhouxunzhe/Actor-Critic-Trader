@@ -32,7 +32,7 @@ class A2C:
                                    gamma=gamma, fc1_dims=layer1_size, fc2_dims=layer2_size, lr=alpha, entropy=entropy)
         self.network.share_memory()
         self.network.train()
-        
+
         if load:
             self.network.load_checkpoint(self.checkpoint_dir)
 
@@ -139,7 +139,7 @@ class A2C:
             observation = observation_
             if verbose:
                 print(f"A2C testing - Date: {info.date()},\tBalance: {int(self.env.get_balance())},\t"
-                    f"Cumulative Return: {int(wealth) - 1000000},\tShares: {self.env.get_shares()}")
+                      f"Cumulative Return: {int(wealth) - 1000000},\tShares: {self.env.get_shares()}")
             return_history.append(wealth - 1000000)
             wealth_history.append(wealth)
 
