@@ -226,4 +226,4 @@ https://arxiv.org/abs/1502.05477
 
 ## License
 
-Actor-Critic-Trader is MIT licensed. See the [LICENSE file](./LICENSE) for details.
+Actor-Critic-Trader is MIT licensed. See the [LICENSE file](../LICENSE) for details.

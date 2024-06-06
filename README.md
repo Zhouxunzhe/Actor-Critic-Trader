@@ -31,7 +31,7 @@ This project uses Actor-Critic Deep Reinforcement Learning algorithms including 
 4. For cuda user (cuda 11.3)
 
    ```
-   conda install pytorch==1.9.1 torchvision==0.10.1 torchaudio==0.9.1 cudatoolkit=11.3 -c pytorch -c conda-forge
+   pip install torch==1.9.1+cu111 torchvision==0.10.1+cu111 torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html
    ```
    
 5. Train the models
@@ -46,19 +46,65 @@ This project uses Actor-Critic Deep Reinforcement Learning algorithms including 
 
 ## **Result**
 
-**A2C (Actor-Critic)** reaches profits _ at _ round, against _ of buy&hold.
+**A2C (Actor-Critic)** reaches the most profits at the 13 round.
+
+| index               | stat     |
+| ------------------- | -------- |
+| Annual return       | 0.501005 |
+| Cumulative returns  | 1.167534 |
+| Annual volatility   | 0.313186 |
+| Sharpe ratio        | 1.453883 |
+| Calmar ratio        | 1.646764 |
+| Stability           | 0.903189 |
+| Max drawdown        | -0.30424 |
+| Omega ratio         | 1.358105 |
+| Sortino ratio       | 2.265669 |
+| Skew                | 0.211108 |
+| Kurtosis            | 13.59174 |
+| Tail ratio          | 1.217694 |
+| Daily value at risk | -0.03765 |
 
 <img src="./assets/a2c_result.png" style="zoom:80%;" />
 
-**DDPG (Deep Deterministic Policy Gradient)** reaches profits _ at _ round, against _ of buy&hold.
+**DDPG (Deep Deterministic Policy Gradient)** reaches the most profits at the 14 round.
+
+| index               | stat     |
+| ------------------- | -------- |
+| Annual return       | 0.591703 |
+| Cumulative returns  | 1.423814 |
+| Annual volatility   | 0.37695  |
+| Sharpe ratio        | 1.422367 |
+| Calmar ratio        | 1.88296  |
+| Stability           | 0.864256 |
+| Max drawdown        | -0.31424 |
+| Omega ratio         | 1.299809 |
+| Sortino ratio       | 2.132271 |
+| Skew                | -0.01881 |
+| Kurtosis            | 5.445235 |
+| Tail ratio          | 1.014544 |
+| Daily value at risk | -0.04536 |
 
 <img src="./assets/ddpg_result.png" style="zoom:80%;" />
 
-**PPO (Proximal Policy Optimization)** reaches profits _ at _ round, against _ of buy&hold.
+**PPO (Proximal Policy Optimization)** reaches the most profits at the 33 round.
+
+| index               | stat     |
+| ------------------- | -------- |
+| Annual return       | 0.363893 |
+| Cumulative returns  | 0.806028 |
+| Annual volatility   | 0.274843 |
+| Sharpe ratio        | 1.267362 |
+| Calmar ratio        | 1.195302 |
+| Stability           | 0.90252  |
+| Max drawdown        | -0.30444 |
+| Omega ratio         | 1.30618  |
+| Sortino ratio       | 1.833882 |
+| Skew                | -0.16044 |
+| Kurtosis            | 12.17401 |
+| Tail ratio          | 0.988949 |
+| Daily value at risk | -0.03324 |
 
 <img src="./assets/ppo_result.png" style="zoom:80%;" />
-
-## Conclusion
 
 ## Documentation
 

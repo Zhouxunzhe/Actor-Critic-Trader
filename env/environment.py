@@ -19,7 +19,7 @@ class PortfolioEnv:
             stock['ATR'] = TA.ATR(stock)
         self.n_stocks = len(self.historical_data)
         self.prices = np.zeros(self.n_stocks)
-        self.shares = np.zeros(self.n_stocks).astype(np.int)
+        self.shares = np.zeros(self.n_stocks).astype(int)
         self.balance = 0
         self.current_row = 0
         self.end_row = 0
@@ -53,7 +53,7 @@ class PortfolioEnv:
         else:
             self.end_row = self.historical_data[0].index.get_loc(end_date)
         self.prices = self.get_prices()
-        self.shares = np.zeros(self.n_stocks).astype(np.int)
+        self.shares = np.zeros(self.n_stocks).astype(int)
         self.balance = initial_balance
 
         return self.get_state()
@@ -150,7 +150,7 @@ class PortfolioEnv:
             new_shares = np.floor(current_wealth * action[1:] / self.prices)
             actions = new_shares - self.shares
             cost = self.prices.dot(actions)
-            self.shares = self.shares + actions.astype(np.int)
+            self.shares = self.shares + actions.astype(int)
             self.balance -= cost
             self.current_row += 1
             new_prices = self.get_prices()
@@ -163,7 +163,7 @@ class PortfolioEnv:
             if cost > self.balance:
                 actions = np.floor(actions * self.balance / cost)
                 cost = self.prices.dot(actions)
-            self.shares = self.shares + actions.astype(np.int)
+            self.shares = self.shares + actions.astype(int)
             self.balance -= cost
             self.current_row += 1
             new_prices = self.get_prices()

@@ -26,12 +26,12 @@ class PPOMemory:
         batches = [indices[i:i + self.batch_size] for i in batch_start]
 
         return np.array(self.states), \
-               np.array(self.actions), \
-               np.array(self.probs), \
-               np.array(self.vals), \
-               np.array(self.rewards), \
-               np.array(self.dones), \
-               batches
+            np.array(self.actions), \
+            np.array(self.probs), \
+            np.array(self.vals), \
+            np.array(self.rewards), \
+            np.array(self.dones), \
+            batches
 
     def store_memory(self, state, action, probs, vals, reward, done):
         self.states.append(state)
@@ -108,7 +108,7 @@ class ActorNetwork(nn.Module):
 
 
 class CriticNetwork(nn.Module):
-    def __init__(self, input_dims, alpha,fc1_dims=400, fc2_dims=300,
+    def __init__(self, input_dims, alpha, fc1_dims=400, fc2_dims=300,
                  chkpt_dir='checkpoints/ppo'):
         super(CriticNetwork, self).__init__()
 
@@ -209,7 +209,7 @@ class Agent:
     def learn(self):
         for _ in range(self.n_epochs):
             state_arr, action_arr, old_prob_arr, vals_arr, \
-            reward_arr, dones_arr, batches = \
+                reward_arr, dones_arr, batches = \
                 self.memory.generate_batches()
 
             values = vals_arr
