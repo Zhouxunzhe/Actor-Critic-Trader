@@ -10,19 +10,19 @@ class PPO:
 
     def __init__(self, load=False, alpha=0.0003, n_epochs=10,
                  batch_size=64, layer1_size=512, layer2_size=512, t_max=256,
-                 state_type='only prices', djia_year=2019, repeat=0, entropy=1e-2):
+                 state_type='only prices', eval_year=2024, repeat=0, entropy=1e-2):
 
-        self.figure_dir = 'plots/ppo'
+        self.figure_dir = 'sh_plots/ppo'
         self.checkpoint_dir = 'checkpoints/ppo'
         os.makedirs(self.figure_dir, exist_ok=True)
         os.makedirs(self.checkpoint_dir, exist_ok=True)
         self.t_max = t_max
         self.repeat = repeat
 
-        self.env = PortfolioEnv(action_scale=1000, state_type=state_type, djia_year=djia_year)
-        if djia_year == 2019:
+        self.env = PortfolioEnv(action_scale=1000, state_type=state_type, eval_year=eval_year)
+        if eval_year == 2024:
             self.intervals = self.env.get_intervals(train_ratio=0.7, valid_ratio=0.15, test_ratio=0.15)
-        elif djia_year == 2012:
+        elif eval_year == 2012:
             self.intervals = self.env.get_intervals(train_ratio=0.9, valid_ratio=0.05, test_ratio=0.05)
         self.agent = Agent(action_dims=self.env.action_shape(), batch_size=batch_size, alpha=alpha,
                            n_epochs=n_epochs, input_dims=self.env.state_shape(),

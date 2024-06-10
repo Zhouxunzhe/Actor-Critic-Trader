@@ -162,7 +162,7 @@ class ActorCritic(nn.Module):
 class Agent(mp.Process):
 
     def __init__(self, network, interval, conn, lock, name, t_max, verbose=False,
-                 state_type='only prices', djia_year=2019):
+                 state_type='only prices', eval_year=2024):
         super(Agent, self).__init__()
 
         self.rewards = []
@@ -173,7 +173,7 @@ class Agent(mp.Process):
         self.conn = conn
         self.lock = lock
         self.name = name
-        self.env = PortfolioEnv(action_scale=1000, state_type=state_type, djia_year=djia_year)
+        self.env = PortfolioEnv(action_scale=1000, state_type=state_type, eval_year=eval_year)
         self.t_max = t_max
         self.verbose = verbose
 

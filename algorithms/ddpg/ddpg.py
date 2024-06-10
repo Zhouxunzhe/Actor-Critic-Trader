@@ -11,18 +11,18 @@ class DDPG:
 
     def __init__(self, load=False, alpha=0.000025, beta=0.00025, tau=0.001,
                  batch_size=64, layer1_size=400, layer2_size=300,
-                 state_type='only prices', djia_year=2019, repeat=0):
+                 state_type='only prices', eval_year=2024, repeat=0):
 
-        self.figure_dir = 'plots/ddpg'
+        self.figure_dir = 'sh_plots/ddpg'
         self.checkpoint_dir = 'checkpoints/ddpg'
         os.makedirs(self.figure_dir, exist_ok=True)
         os.makedirs(self.checkpoint_dir, exist_ok=True)
         self.repeat = repeat
 
-        self.env = PortfolioEnv(action_scale=1000, state_type=state_type, djia_year=djia_year)
-        if djia_year == 2019:
+        self.env = PortfolioEnv(action_scale=1000, state_type=state_type, eval_year=eval_year)
+        if eval_year == 2024:
             self.intervals = self.env.get_intervals(train_ratio=0.7, valid_ratio=0.15, test_ratio=0.15)
-        elif djia_year == 2012:
+        elif eval_year == 2012:
             self.intervals = self.env.get_intervals(train_ratio=0.9, valid_ratio=0.05, test_ratio=0.05)
         self.agent = Agent(alpha=alpha, beta=beta, input_dims=self.env.state_shape(), 
                            action_dims=self.env.action_shape(), tau=tau, batch_size=batch_size, 

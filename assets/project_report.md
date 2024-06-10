@@ -2,38 +2,6 @@
 
 在本项目中，使用了演员-评论深度强化学习算法，包括A2C（优势-演员-评论家）、DDPG（深度确定性策略梯度）和PPO（近端策略优化）来进行投资组合管理。
 
-## Quickstart
-
-1. 克隆GitHub仓库
-
-   ```
-   git clone https://github.com/Zhouxunzhe/Actor_Critic_Trader.git
-   ```
-
-2. 准备conda环境（假设已经安装了[conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/)）
-
-   Note：或者也可以忽视这一步，直接在电脑python中安装运行环境
-
-   ```
-   # We require python<=3.8
-   conda create -n actrader python=3.9
-   conda activate actrader
-   ```
-
-3. 安装运行环境
-
-   ```
-   cd QuantProgramming
-   pip install --upgrade pip
-   pip install -r requirements.txt
-   ```
-
-4. 训练模型
-
-   ```
-   python main.py
-   ```
-
 ## Introduction
 
 #### **演员–评论家算法 AC（Actor-Critic）**
@@ -182,33 +150,122 @@ TRPO 使用泰勒展开近似、共轭梯度、线性搜索等方法直接求解
 
 ## Experiments
 
-#### **Dataset**
+### **Dataset**
 
-#### **Result**
+多只股票交易策略：
 
-**演员–评论家算法 AC（Actor-Critic）**
+- 道琼斯股指 1990 - 2021
+- 上证股指 2019 - 2024
 
-A2C 在训练的第 TODO 轮实现了 TODO 的收益，超过了buy&hold (baseline) TODO 的收益：
+单只股票VNPY回测：
+
+- 苹果（AAPL） 2008 - 2021
+
+### **Result**
+
+#### 多只股票交易策略：
+
+对于多只股票长期的交易策略，由于之前有过强化学习交易经验，深知单只股票简单3种action的缺陷，难以收敛以及模型不具有很强的鲁棒性和泛化性。故本次期末项目中，我尝试使用强化学习模型预测多只股票的不同时期的持仓比例，并以此作为学习的目标。经过实验发现，相较于网上流传较广以及人工智能学习较多的三-动作的策略，该种方法更具有可解释性和收敛性。
+
+具体代码实现基本基于不同的强化学习算法，实现细节如数据维度、矩阵计算等trick技巧不在此赘述。
+
+以下为最好的实验结果，想要了解其他训练轮数的实验结果，请参照 `plots` 文件夹。
+
+**注意：**需要说明的是，在本次实验中，由于在代码层面为了尽量减少对依赖包的更改，尊重vnpy自带的单股票的回测方法。同时由于本算法的多只股票是计算股票占总资产的比重（单只股票交易策略为100%占比）的限制，对于多只股票的强化学习交易策略，我只在自己编写的仿真环境中回测，但仍遵循股票买卖的一些限制限制。
+
+**AC（Actor-Critic）**在第13轮训练实现了最高的盈利额，为480天内116%的收益。
+
+| index               | stat     |
+| ------------------- | -------- |
+| Annual return       | 0.501005 |
+| Cumulative returns  | 1.167534 |
+| Annual volatility   | 0.313186 |
+| Sharpe ratio        | 1.453883 |
+| Calmar ratio        | 1.646764 |
+| Stability           | 0.903189 |
+| Max drawdown        | -0.30424 |
+| Omega ratio         | 1.358105 |
+| Sortino ratio       | 2.265669 |
+| Skew                | 0.211108 |
+| Kurtosis            | 13.59174 |
+| Tail ratio          | 1.217694 |
+| Daily value at risk | -0.03765 |
 
 <img src="../assets/a2c_result.png" style="zoom:80%;" />
 
-**DDPG (Deep Deterministic Policy Gradient)**
+**DDPG (Deep Deterministic Policy Gradient)** 在第14轮训练实现了最高的盈利额，为480天内142%的收益。
 
-DDPG 在训练的第 TODO 轮实现了 TODO 的收益，超过了buy&hold (baseline) TODO 的收益：
+| index               | stat     |
+| ------------------- | -------- |
+| Annual return       | 0.591703 |
+| Cumulative returns  | 1.423814 |
+| Annual volatility   | 0.37695  |
+| Sharpe ratio        | 1.422367 |
+| Calmar ratio        | 1.88296  |
+| Stability           | 0.864256 |
+| Max drawdown        | -0.31424 |
+| Omega ratio         | 1.299809 |
+| Sortino ratio       | 2.132271 |
+| Skew                | -0.01881 |
+| Kurtosis            | 5.445235 |
+| Tail ratio          | 1.014544 |
+| Daily value at risk | -0.04536 |
 
 <img src="../assets/ddpg_result.png" style="zoom:80%;" />
 
-**PPO (Proximal Policy Optimization)**
+**PPO (Proximal Policy Optimization)** 在第33轮实现了最高的盈利额，为480天内80%的收益。
 
-PPO 在训练的第 TODO 轮实现了 TODO 的收益，超过了buy&hold (baseline) TODO 的收益：
+| index               | stat     |
+| ------------------- | -------- |
+| Annual return       | 0.363893 |
+| Cumulative returns  | 0.806028 |
+| Annual volatility   | 0.274843 |
+| Sharpe ratio        | 1.267362 |
+| Calmar ratio        | 1.195302 |
+| Stability           | 0.90252  |
+| Max drawdown        | -0.30444 |
+| Omega ratio         | 1.30618  |
+| Sortino ratio       | 1.833882 |
+| Skew                | -0.16044 |
+| Kurtosis            | 12.17401 |
+| Tail ratio          | 0.988949 |
+| Daily value at risk | -0.03324 |
 
 <img src="../assets/ppo_result.png" style="zoom:80%;" />
 
+#### 基于VNPY单只股票交易策略：
+
+基于单只股票的交易策略主要围绕actor-critic强化学习算法。特此鸣谢杜楷劼同学的开源代码带来的启发。
+
+在基于vnpy的交易策略中，主要实现了基于强化学习和lstm、cnn、transformer等数据编码模型的算法。在我之前的强化学习股票交易的尝试中，我一直局限于单种模型，忽视了多模型隐藏层之间的交互作用。受到杜同学的启发，我尝试使用lstm、cnn、transformer等一种编码模型对多天的股价信息进行编码并传输到actor和critic模型中进行强化学习的训练。
+
+**注意：**值得注意的是，杜同学的算法实现并非完美的，在复现过程中，我有幸发现其中的漏洞所在：1. 原代码中并未编写reward的计算策略，导致每次回测时reward为常数0；2. 原代码中对于数据的处理不够完善，当规格差异较大的数据传入lstm模型中，势必会导致梯度消失和梯度爆炸的现象出现，从而导致实验过程中模型返回结果永远为一个特定的常数。基于以上两点我做了对比和改进，发现原代码中实现的超额收益很可能是由于数据原因，使得最终收益仍然为一个较为客观的数值。
+
+**基于纯actor-critic的交易策略**
+
+<img src="../assets/vnpy/ac_random.png" style="zoom:80%;" />
+
+**基于actor-critic和lstm结合的交易策略**
+
+<img src="../assets/vnpy/lstm_ac_random.png" style="zoom:80%;" />
+
+**基于两个agent的actor-critic和lstm结合的交易策略**
+
+<img src="../assets/vnpy/lstm_ac_split_random.png" style="zoom:80%;" />
+
+**基于actor-critic和cnn结合的交易策略**
+
+<img src="../assets/vnpy/cnn_ac_random.png" style="zoom:80%;" />
+
+**基于actor-critic和transformer结合的交易策略**
+
+<img src="../assets/vnpy/transformer_ac_random.png" style="zoom:80%;" />
+
 ## Conclusion
 
-## Reference
+在本次项目中，我主要使用了ac强化学习方法，综合使用vnpy仿真交易工具和lstm、cnn、transformer等一众模型，实现了单只和多只股票的交易策略，并且在回测过程中都实现了十分可观的收益。
 
-https://github.com/matinaghaei/Portfolio-Management-ActorCriticRL
+## Reference
 
 https://www.paddlepaddle.org.cn/documentation/docs/zh/practices/reinforcement_learning/actor_critic_method.html#actor-critic-method
 
@@ -223,7 +280,3 @@ https://hrl.boyuai.com/chapter/2/ppo%E7%AE%97%E6%B3%95/
 https://arxiv.org/pdf/1509.02971
 
 https://arxiv.org/abs/1502.05477
-
-## License
-
-Actor-Critic-Trader is MIT licensed. See the [LICENSE file](../LICENSE) for details.

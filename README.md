@@ -24,6 +24,8 @@ This project uses Actor-Critic Deep Reinforcement Learning algorithms including 
 
    ```
    cd Actor-Critic-Trader
+   git clone https://github.com/vnpy/vnpy.git
+   conda install -c conda-forge ta-lib
    pip install --upgrade pip
    pip install -r requirements.txt
    ```
@@ -44,67 +46,68 @@ This project uses Actor-Critic Deep Reinforcement Learning algorithms including 
 
 [Dow Jones Industrial Average (DJIA) 1990 - 2021](https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average)
 
+[SSE Composite Index(SH)  2019 - 2024](https://en.wikipedia.org/wiki/SSE_Composite_Index)
+
 ## **Result**
 
 **A2C (Actor-Critic)** reaches the most profits at the 13 round.
-
-| index               | stat     |
-| ------------------- | -------- |
-| Annual return       | 0.501005 |
-| Cumulative returns  | 1.167534 |
-| Annual volatility   | 0.313186 |
-| Sharpe ratio        | 1.453883 |
-| Calmar ratio        | 1.646764 |
-| Stability           | 0.903189 |
-| Max drawdown        | -0.30424 |
-| Omega ratio         | 1.358105 |
-| Sortino ratio       | 2.265669 |
-| Skew                | 0.211108 |
-| Kurtosis            | 13.59174 |
-| Tail ratio          | 1.217694 |
-| Daily value at risk | -0.03765 |
 
 <img src="./assets/a2c_result.png" style="zoom:80%;" />
 
 **DDPG (Deep Deterministic Policy Gradient)** reaches the most profits at the 14 round.
 
-| index               | stat     |
-| ------------------- | -------- |
-| Annual return       | 0.591703 |
-| Cumulative returns  | 1.423814 |
-| Annual volatility   | 0.37695  |
-| Sharpe ratio        | 1.422367 |
-| Calmar ratio        | 1.88296  |
-| Stability           | 0.864256 |
-| Max drawdown        | -0.31424 |
-| Omega ratio         | 1.299809 |
-| Sortino ratio       | 2.132271 |
-| Skew                | -0.01881 |
-| Kurtosis            | 5.445235 |
-| Tail ratio          | 1.014544 |
-| Daily value at risk | -0.04536 |
-
 <img src="./assets/ddpg_result.png" style="zoom:80%;" />
 
 **PPO (Proximal Policy Optimization)** reaches the most profits at the 33 round.
 
-| index               | stat     |
-| ------------------- | -------- |
-| Annual return       | 0.363893 |
-| Cumulative returns  | 0.806028 |
-| Annual volatility   | 0.274843 |
-| Sharpe ratio        | 1.267362 |
-| Calmar ratio        | 1.195302 |
-| Stability           | 0.90252  |
-| Max drawdown        | -0.30444 |
-| Omega ratio         | 1.30618  |
-| Sortino ratio       | 1.833882 |
-| Skew                | -0.16044 |
-| Kurtosis            | 12.17401 |
-| Tail ratio          | 0.988949 |
-| Daily value at risk | -0.03324 |
-
 <img src="./assets/ppo_result.png" style="zoom:80%;" />
+
+## Run on VeighNa 
+
+1. run VeighNa GUI
+
+   ```
+   python run.py
+   ```
+
+2. I have modified site-packages in vnpy, you can copy the packages in folder `vnpy/site-packages` to your VeighNa dependency path.
+
+3. Import Data into VeighNa Trader
+
+   Import the downloaded data into the VeighNa Trader platform. Ensure that the column names match the expected format. You can do this manually or by editing the CSV file.
+
+   <img src="./assets/vnpy/datamanager.png" style="zoom:80%;" />
+
+4. train your model
+
+   ```
+   python vnpy/train/[your_model_name].py
+   ```
+
+5. run backtest
+
+   Click on CTA Backtesting in the main menu. Select the desired strategy (e.g. AC_Transformer_Strategy). Choose the local data corresponding to your imported data (e.g. AAPL.LOCAL). Set the start and end dates for the backtest.
+
+   <img src="./assets/vnpy/transformer_ac_random.png" style="zoom:80%;" />
+
+#### **Existed problems**
+
+- loss will not go down
+- reward always 0: reward = targets - states[:, -1, 3] not work !!!! (reward not defined)
+- argmax return the same output
+- lstm return the same output
+- action compute loss with advantage, no backward
+
+#### **solution**
+
+- change the input_dim: without volume for lstm, otherwise it will have weight explosion
+- define the reward function for reinforcement learning
+
+## Conclusion
+
+For Actor-Critic Algorithms, I have implemented multiple stocks trading strategy using DDPG, A2C,PPO
+
+For VNPY Actor-Critic Algorithms, I have implemented single stocks trading strategy using actor-critic, LSTM, CNN, Transformer.
 
 ## Documentation
 

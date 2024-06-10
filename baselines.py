@@ -31,16 +31,16 @@ def test(env, weights, name):
 
     returns = pd.Series(wealth_history, buy_hold_history.index).pct_change().dropna()
     stats = timeseries.perf_stats(returns)
-    stats.to_csv(f'plots/{name}_perf.csv')
+    stats.to_csv(f'sh_plots/{name}_perf.csv')
 
 
-file = open(f'env/data/DJIA_2019/tickers.txt', 'r')
+file = open(f'env/data/SH_2024/tickers.txt', 'r')
 tickers = [line.strip() for line in file.readlines()]
 
 table = pd.DataFrame()
 for i in range(len(tickers)):
-    data = pd.read_csv(f'env/data/DJIA_2019/ticker_{tickers[i]}.csv', parse_dates=True, index_col='Date')
-    table[data['ticker'][0]] = data['Adj Close']
+    data = pd.read_csv(f'env/data/SH_2024/ticker_{tickers[i]}.csv', parse_dates=True, index_col='Date')
+    table[data['ticker'][0]] = data['Close']
 
 env = PortfolioEnv(state_type='indicators')
 intervals = env.get_intervals()
@@ -62,6 +62,6 @@ ef = EfficientFrontier(mu, S)
 weights = [0] + list(ef.min_volatility().values())
 test(env, weights, 'Min-Volatility')
 
-save_plot('plots/baselines_testing.png',
+save_plot('sh_plots/baselines_testing.png',
           title=f"Testing - {intervals['testing'][0].date()} to {intervals['testing'][1].date()}",
           x_label='Days', y_label='Cumulative Return (Dollars)')

@@ -16,26 +16,26 @@ def main():
     plot.initialize()
     mp.set_start_method('spawn')
 
-    for i in range(51):
+    for i in range(20):
         print(f"---------- round {i} ----------")
 
-        if not os.path.isfile(f'plots/ddpg/{i}2_testing.png'):
-            ddpg = DDPG(state_type='indicators', djia_year=2019, repeat=i)
-            # ddpg.train()
+        if not os.path.isfile(f'sh_plots/ddpg/{i}2_testing.png'):
+            ddpg = DDPG(state_type='indicators', eval_year=2024, repeat=i)
+            ddpg.train()
             ddpg.test()
             del ddpg
             torch.cuda.empty_cache()
 
-        if not os.path.isfile(f'plots/ppo/{i}2_testing.png'):
-            ppo = PPO(state_type='indicators', djia_year=2019, repeat=i)
-            # ppo.train()
+        if not os.path.isfile(f'sh_plots/ppo/{i}2_testing.png'):
+            ppo = PPO(state_type='indicators', eval_year=2024, repeat=i)
+            ppo.train()
             ppo.test()
             del ppo
             torch.cuda.empty_cache()
 
-        if not os.path.isfile(f'plots/a2c/{i}2_testing.png'):
-            a2c = A2C(n_agents=4, state_type='indicators', djia_year=2019, repeat=i)
-            # a2c.train()
+        if not os.path.isfile(f'sh_plots/a2c/{i}2_testing.png'):
+            a2c = A2C(n_agents=4, state_type='indicators', eval_year=2024, repeat=i)
+            a2c.train()
             a2c.test()
             del a2c
             torch.cuda.empty_cache()

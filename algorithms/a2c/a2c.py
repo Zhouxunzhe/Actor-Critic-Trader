@@ -11,22 +11,22 @@ class A2C:
 
     def __init__(self, n_agents, load=False, alpha=1e-3, gamma=0.99,
                  layer1_size=512, layer2_size=512, t_max=64,
-                 state_type='only prices', djia_year=2019, repeat=0, entropy=1e-4):
+                 state_type='only prices', eval_year=2024, repeat=0, entropy=1e-4):
 
         self.n_agents = n_agents
-        self.figure_dir = 'plots/a2c'
+        self.figure_dir = 'sh_plots/a2c'
         self.checkpoint_dir = 'checkpoints/a2c'
         os.makedirs(self.figure_dir, exist_ok=True)
         os.makedirs(self.checkpoint_dir, exist_ok=True)
         self.t_max = t_max
         self.state_type = state_type
-        self.djia_year = djia_year
+        self.eval_year = eval_year
         self.repeat = repeat
 
-        self.env = PortfolioEnv(action_scale=1000, state_type=state_type, djia_year=djia_year)
-        if djia_year == 2019:
+        self.env = PortfolioEnv(action_scale=1000, state_type=state_type, eval_year=eval_year)
+        if eval_year == 2024:
             self.intervals = self.env.get_intervals(train_ratio=0.7, valid_ratio=0.15, test_ratio=0.15)
-        elif djia_year == 2012:
+        elif eval_year == 2012:
             self.intervals = self.env.get_intervals(train_ratio=0.9, valid_ratio=0.05, test_ratio=0.05)
         self.network = ActorCritic(input_dims=self.env.state_shape(), action_dims=self.env.action_shape(),
                                    gamma=gamma, fc1_dims=layer1_size, fc2_dims=layer2_size, lr=alpha, entropy=entropy)
@@ -54,7 +54,7 @@ class A2C:
                              t_max=self.t_max,
                              verbose=verbose,
                              state_type=self.state_type,
-                             djia_year=self.djia_year) for i in range(self.n_agents)]
+                             eval_year=self.eval_year) for i in range(self.n_agents)]
             [w.start() for w in workers]
 
             self.network.done = False

@@ -9,8 +9,8 @@ import pandas as pd
 class PortfolioEnv:
 
     def __init__(self, start_date=None, end_date=None, action_scale=1, action_interpret='portfolio',
-                 state_type='only prices', djia_year=2019):
-        self.loader = Loader(djia_year=djia_year)
+                 state_type='only prices', eval_year=2024):
+        self.loader = Loader(eval_year=eval_year)
         self.historical_data = self.loader.load(start_date, end_date)
         for stock in self.historical_data:
             stock['MA20'] = TA.SMA(stock, 20)
@@ -59,7 +59,7 @@ class PortfolioEnv:
         return self.get_state()
 
     def get_prices(self):
-        return np.array([stock['Adj Close'][self.current_row] for stock in self.historical_data])
+        return np.array([stock['Close'][self.current_row] for stock in self.historical_data])
 
     def get_state(self):
 
@@ -69,7 +69,7 @@ class PortfolioEnv:
         if self.action_interpret == 'portfolio' and self.state_type == 'indicators':
             state = []
             for stock in self.historical_data:
-                state.extend(stock[['Adj Close', 'MA20', 'MA50', 'MA200', 'ATR', 'Volume']].iloc[self.current_row])
+                state.extend(stock[['Close', 'MA20', 'MA50', 'MA200', 'ATR', 'Volume']].iloc[self.current_row])
             return np.array(state)
 
         if self.action_interpret == 'transactions' and self.state_type == 'only prices':
@@ -78,7 +78,7 @@ class PortfolioEnv:
         if self.action_interpret == 'transactions' and self.state_type == 'indicators':
             state = [self.balance] + self.shares.tolist()
             for stock in self.historical_data:
-                state.extend(stock[['Adj Close', 'MA20', 'MA50', 'MA200', 'ATR', 'Volume']].iloc[self.current_row])
+                state.extend(stock[['Close', 'MA20', 'MA50', 'MA200', 'ATR', 'Volume']].iloc[self.current_row])
             return np.array(state)
 
     def is_finished(self):
@@ -106,7 +106,7 @@ class PortfolioEnv:
         else:
             end_row = self.historical_data[0].index.get_loc(end_date)
 
-        values = [sum([stock['Adj Close'][row] for stock in self.historical_data])
+        values = [sum([stock['Close'][row] for stock in self.historical_data])
                   for row in range(start_row, end_row + 1)]
         dates = self.historical_data[0].index[start_row:end_row + 1]
 
